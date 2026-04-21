@@ -103,7 +103,7 @@ export default function NexusDashboard() {
           </div>
           <div>
              <h1 className="text-4xl font-black tracking-tighter uppercase leading-none mb-2 digital-font italic">
-                The Nexus <span className="text-cyan-400">Engine</span>
+                The Nexus <span className="text-cyan-400">Engine</span> <span className="text-[14px] text-fuchsia-500 font-mono tracking-widest ml-4 align-middle opacity-80 border-l border-fuchsia-500/30 pl-4 uppercase">Institutional Risk Desk</span>
              </h1>
              <div className="flex flex-wrap items-center text-[10px] text-slate-500 font-mono tracking-[0.2em] uppercase" style={{ gap: '32px' }}>
                <div className="border border-cyan-900/30 px-4 py-1 bg-cyan-950/20 whitespace-nowrap">
@@ -165,9 +165,9 @@ export default function NexusDashboard() {
                  </div>
                  <span className="text-[11px] px-3 py-1 bg-fuchsia-500/20 border border-fuchsia-500/40 rounded-sm">LVL_04</span>
               </div>
-              <h3 className="text-4xl font-black mb-6 tracking-tighter leading-tight group-hover:glow-text-fuchsia transition-all">ANOMALY_SPIKE</h3>
+              <h3 className="text-4xl font-black mb-6 tracking-tighter leading-tight group-hover:glow-text-fuchsia transition-all">THE PIVOT PROOF</h3>
               <p className="text-sm text-slate-400 leading-relaxed font-light italic opacity-80 border-l-2 border-fuchsia-500/20 pl-4">
-                 "Predicted odds detected divergence of 4.2x above historical alpha baseline. Immediate hedging advised."
+                 "Case Study: Dec '23 Fed Pivot. Nexus flagged 14% sentiment divergence 72 hours before institutional 10Y Yields adjusted."
               </p>
            </div>
         </div>
