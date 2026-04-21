@@ -15,55 +15,55 @@ type ScriptStep =
 
 const SCRIPT: ScriptStep[] = [
     // --- 0:00 - 0:20: INTRODUCTION ---
-    { type: 'cursor', x: '50%', y: '50%', delay: 1000 },
-    { type: 'subtitle', text: 'NEXUS ENGINE: AI-Native Analytical Command Center for ZerveHack 2026.', delay: 4000 },
-    { type: 'log', text: '[System] Nexus v4.8.2 initialized' },
-    { type: 'log', text: '[System] Memory Core: STABLE' },
-    { type: 'subtitle', text: 'Scenario: Identifying high-alpha market anomalies in real-time.', delay: 4000 },
+    { type: 'cursor', x: '50%', y: '50%', delay: 500 },
+    { type: 'subtitle', text: 'NEXUS ENGINE. AI-Native Analytical Command Center for ZerveHack 2026.' },
+    { type: 'log', text: '[System] Nexus v4.8.2 initialized', delay: 300 },
+    { type: 'log', text: '[System] Memory Core: STABLE', delay: 300 },
+    { type: 'subtitle', text: 'Scenario: Identifying high-alpha market anomalies in real-time.' },
 
     // --- 0:20 - 0:40: THE PROBLEM ---
-    { type: 'subtitle', text: 'The Problem: The "Divergence Dilemma" – the lag between crowd sentiment and institutional execution.', delay: 4000 },
+    { type: 'subtitle', text: 'The Problem. The Divergence Dilemma. The lag between crowd sentiment and institutional execution.' },
     { type: 'cursor', targetId: 'hud-header', delay: 1500 },
-    { type: 'log', text: '[System] Scanning global domain vectors...' },
+    { type: 'log', text: '[System] Scanning global domain vectors...', delay: 300 },
 
     // --- 0:40 - 1:20: TECHNICAL WORKFLOW ---
-    { type: 'subtitle', text: 'Step 1: Ingesting Polymarket data vs the S&P 500 Index.', delay: 3000 },
+    { type: 'subtitle', text: 'Step 1. Ingesting Polymarket data versus the S and P 500 Index.' },
     { type: 'cursor', targetId: 'sys-status', delay: 1500 },
-    { type: 'log', text: '[Ingestion] Inbound ticket: SPY (Alpha Vantage)' },
-    { type: 'log', text: '[Ingestion] Inbound sentiment: Polymarket Gamma API' },
+    { type: 'log', text: '[Ingestion] Inbound ticket: SPY (Alpha Vantage)', delay: 300 },
+    { type: 'log', text: '[Ingestion] Inbound sentiment: Polymarket Gamma API', delay: 300 },
     
-    { type: 'subtitle', text: 'Step 2: Real-time vector correlation via our Zerve-hosted Python engine.', delay: 4000 },
+    { type: 'subtitle', text: 'Step 2. Real-time vector correlation via our Zerve-hosted Python engine.' },
     { type: 'cursor', targetId: 'sys-sync', delay: 1500 },
-    { type: 'log', text: '[Engine] Running Lead/Lag Sweep (30-day window)...' },
-    { type: 'log', text: '[Engine] Multi-axis correlation score calculated: 0.824 FIXED' },
+    { type: 'log', text: '[Engine] Running Lead Lag Sweep, 30-day window...', delay: 300 },
+    { type: 'log', text: '[Engine] Multi-axis correlation score calculated: 0.824 FIXED', delay: 300 },
 
-    { type: 'subtitle', text: 'Step 3: Stateful memory tracking using Backboard.io.', delay: 3000 },
+    { type: 'subtitle', text: 'Step 3. Stateful memory tracking using Backboard dot io.' },
     { type: 'cursor', targetId: 'memory-card', delay: 1500 },
-    { type: 'log', text: '[Memory] Storing vector state in Backboard ledger...' },
-    { type: 'log', text: '[Memory] Pattern recognized: Sentiment leads by 72 hours.' },
+    { type: 'log', text: '[Memory] Storing vector state in Backboard ledger...', delay: 300 },
+    { type: 'log', text: '[Memory] Pattern recognized: Sentiment leads by 72 hours.', delay: 300 },
 
     // --- 1:20 - 2:00: THE DASHBOARD ---
-    { type: 'subtitle', text: 'Step 4: Visualizing the "Divergence HUD".', delay: 3000 },
+    { type: 'subtitle', text: 'Step 4. Visualizing the Divergence HUD.' },
     { type: 'cursor', targetId: 'intensity-card', delay: 1500 },
-    { type: 'subtitle', text: 'Live Intensity monitors the absolute strength of the sentiment-price bond.', delay: 4000 },
+    { type: 'subtitle', text: 'Live Intensity monitors the absolute strength of the sentiment price bond.' },
     
     { type: 'cursor', targetId: 'yield-chart', delay: 1500 },
-    { type: 'subtitle', text: 'Primary Yield Convergence shows the exact point where sentiment and price decouple.', delay: 5000 },
-    { type: 'log', text: '[Visual] Rendering Primary_Yield_Convergence...' },
+    { type: 'subtitle', text: 'Primary Yield Convergence shows the exact point where sentiment and price decouple.' },
+    { type: 'log', text: '[Visual] Rendering Primary_Yield_Convergence...', delay: 300 },
 
     // --- 2:00 - 2:40: CASE STUDY ---
-    { type: 'subtitle', text: 'Step 5: The "Pivot Proof" – A Quantified Case Study.', delay: 3000 },
+    { type: 'subtitle', text: 'Step 5. The Pivot Proof. A Quantified Case Study.' },
     { type: 'cursor', targetId: 'divergence-card', delay: 1500 },
-    { type: 'subtitle', text: 'In Dec \'23, Nexus flagged a 14% sentiment surge 3 days before the Fed Pivot moved yields.', delay: 5000 },
-    { type: 'log', text: '[Alpha] Divergence Level 04 Verified (Dec \'23 Event)' },
+    { type: 'subtitle', text: 'In December 2023, Nexus flagged a 14 percent sentiment surge, 3 days before the Fed Pivot moved yields.' },
+    { type: 'log', text: '[Alpha] Divergence Level 04 Verified (Dec 23 Event)', delay: 300 },
 
     { type: 'cursor', targetId: 'global-map', delay: 1500 },
-    { type: 'subtitle', text: 'Global Correlation Map ensures our alpha is stable across all underlying macro factors.', delay: 5000 },
+    { type: 'subtitle', text: 'Global Correlation Map ensures our alpha is stable across all underlying macro factors.' },
 
     // --- 2:40 - 3:00: CONCLUSION ---
-    { type: 'subtitle', text: 'Deployed on Zerve as a production-grade API + High-Fidelity HUD.', delay: 4000 },
-    { type: 'log', text: '[Status] Service live: nexus-engine-api.hub.zerve.cloud' },
-    { type: 'subtitle', text: 'Nexus Engine: Victory through Visual Authority. Built for ZerveHack 2026.', delay: 4000 },
+    { type: 'subtitle', text: 'Deployed on Zerve as a production-grade API plus a High-Fidelity HUD.' },
+    { type: 'log', text: '[Status] Service live: nexus-engine-api.hub.zerve.cloud', delay: 300 },
+    { type: 'subtitle', text: 'Nexus Engine. Victory through Visual Authority. Built for ZerveHack 2026.' },
     { type: 'cursor', x: '95%', y: '5%', delay: 1500 },
 ];
 
@@ -71,64 +71,130 @@ export function DirectorMode({ onClose }: { onClose: () => void }) {
     const [subtitle, setSubtitle] = useState('');
     const [cursorPos, setCursorPos] = useState({ x: 100, y: 100 });
     const [isClicking, setIsClicking] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
    
     const consoleRef = useRef<PluginConsoleRef>(null);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const chunksRef = useRef<Blob[]>([]);
 
-    const getBestVoice = () => {
+    const getBestVoice = (): SpeechSynthesisVoice | null => {
         const voices = window.speechSynthesis.getVoices();
         if (voices.length === 0) return null;
 
-        // Priority 1: Google Natural / US English (Very high quality)
-        const googleVoice = voices.find(v => v.name.includes('Google') && v.name.includes('US English') && v.name.includes('Female'));
-        if (googleVoice) return googleVoice;
+        // Priority 1: Google US English Female
+        const googleFemale = voices.find(v => v.name.includes('Google') && v.name.includes('US English') && v.name.includes('Female'));
+        if (googleFemale) return googleFemale;
         
-        const googleVoiceAny = voices.find(v => v.name.includes('Google') && v.name.includes('US English'));
-        if (googleVoiceAny) return googleVoiceAny;
+        // Priority 2: Any Google US English
+        const googleAny = voices.find(v => v.name.includes('Google') && v.name.includes('US English'));
+        if (googleAny) return googleAny;
 
-        // Priority 2: Microsoft Natural / Online (Edge only, but great)
+        // Priority 3: Microsoft Natural / Online (Edge)
         const msNatural = voices.find(v => v.name.includes('Natural') || v.name.includes('Online'));
         if (msNatural) return msNatural;
 
-        // Priority 3: Premium Female Voices (Zira on Windows, Samantha on Mac)
-        const femaleVoice = voices.find(v => (v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Samantha') || v.name.includes('Aria')));
+        // Priority 4: Premium female system voices
+        const femaleVoice = voices.find(v => 
+            v.name.includes('Zira') || v.name.includes('Samantha') || 
+            v.name.includes('Aria') || v.name.includes('Female')
+        );
         if (femaleVoice) return femaleVoice;
 
         return voices[0];
     };
 
-    const speak = (text: string) => {
-        if ('speechSynthesis' in window) {
+    /** Speaks text and WAITS until the voice finishes before resolving */
+    const speakAndWait = (text: string): Promise<void> => {
+        return new Promise((resolve) => {
+            if (!('speechSynthesis' in window)) {
+                resolve();
+                return;
+            }
             window.speechSynthesis.cancel();
+
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 1.0; 
+            utterance.rate = 0.92;
             utterance.pitch = 1.0;
-            
+
             const bestVoice = getBestVoice();
             if (bestVoice) {
                 utterance.voice = bestVoice;
             }
-            
+
+            utterance.onend = () => resolve();
+            utterance.onerror = () => resolve();
+
             window.speechSynthesis.speak(utterance);
+        });
+    };
+
+    /** Start screen recording via browser MediaRecorder */
+    const startRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getDisplayMedia({
+                video: { displaySurface: 'browser' } as any,
+                audio: true,
+            });
+            chunksRef.current = [];
+            const recorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' });
+            recorder.ondataavailable = (e) => {
+                if (e.data.size > 0) chunksRef.current.push(e.data);
+            };
+            recorder.onstop = () => {
+                const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `nexus_demo_${Date.now()}.webm`;
+                a.click();
+                URL.revokeObjectURL(url);
+                stream.getTracks().forEach(t => t.stop());
+            };
+            recorder.start();
+            mediaRecorderRef.current = recorder;
+            setIsRecording(true);
+        } catch {
+            // User cancelled the share dialog — continue without recording
+            console.warn('Screen recording was not started (user cancelled or not supported).');
+        }
+    };
+
+    const stopRecording = () => {
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
         }
     };
 
     const runScript = async () => {
+        // Pre-load voices (Chrome needs a moment)
+        window.speechSynthesis?.getVoices();
+        await new Promise(r => setTimeout(r, 500));
+
+        // Start screen recording
+        await startRecording();
+
         // Countdown
         for (let i = 5; i > 0; i--) {
             setSubtitle(`Initializing Director Mode in ${i}...`);
             await new Promise(r => setTimeout(r, 1000));
         }
         setSubtitle("");
+        await new Promise(r => setTimeout(r, 500));
 
         for (const step of SCRIPT) {
             if (step.type === 'subtitle') {
                 setSubtitle(step.text);
-                speak(step.text);
+                // WAIT for TTS to finish speaking before advancing
+                await speakAndWait(step.text);
+                // Small breathing pause between sentences
+                await new Promise(r => setTimeout(r, 600));
             }
             else if (step.type === 'log') {
                 consoleRef.current?.log(step.text, 'info');
             }
            
+            // Handle cursor movement
             let nextPos = null;
            
             if ('targetId' in step && step.targetId) {
@@ -152,6 +218,7 @@ export function DirectorMode({ onClose }: { onClose: () => void }) {
                 setCursorPos(nextPos);
             }
 
+            // Handle click
             if (step.type === 'click') {
                 setIsClicking(true);
                 await new Promise(r => setTimeout(r, 200));
@@ -163,6 +230,7 @@ export function DirectorMode({ onClose }: { onClose: () => void }) {
                 setIsClicking(false);
             }
            
+            // Handle scroll  
             if (step.type === 'scroll') {
                 if (step.targetId === 'window') {
                     window.scrollTo({ top: step.y, behavior: 'smooth' });
@@ -172,15 +240,26 @@ export function DirectorMode({ onClose }: { onClose: () => void }) {
                 }
             }
            
-            if (step.delay) await new Promise(r => setTimeout(r, step.delay));
+            // Non-subtitle delays (cursor movement, log pauses, etc.)
+            if (step.type !== 'subtitle' && step.delay) {
+                await new Promise(r => setTimeout(r, step.delay));
+            }
         }
        
         setSubtitle("Analysis Demo Complete.");
-        setTimeout(onClose, 3000);
+        await new Promise(r => setTimeout(r, 3000));
+
+        // Auto-stop recording and trigger download
+        stopRecording();
+        setTimeout(onClose, 1000);
     };
 
     useEffect(() => {
         runScript();
+        return () => {
+            window.speechSynthesis?.cancel();
+            stopRecording();
+        };
     }, []);
 
     return (
@@ -196,6 +275,7 @@ export function DirectorMode({ onClose }: { onClose: () => void }) {
             <AnimatePresence>
                 {subtitle && (
                     <motion.div
+                        key={subtitle}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0 }}
@@ -208,7 +288,22 @@ export function DirectorMode({ onClose }: { onClose: () => void }) {
 
             <PluginConsole ref={consoleRef} />
 
-            <button className="stop-btn" onClick={onClose}>
+            {/* Recording indicator */}
+            {isRecording && (
+                <div style={{
+                    position: 'absolute', top: 30, left: 30,
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    background: 'rgba(0,0,0,0.6)', padding: '8px 16px',
+                    borderRadius: 4, border: '1px solid rgba(255,0,0,0.4)',
+                    fontSize: 12, color: '#f87171', fontFamily: 'monospace',
+                    pointerEvents: 'none', zIndex: 10002,
+                }}>
+                    <div style={{ width: 8, height: 8, background: '#ef4444', borderRadius: '50%', animation: 'pulse 1s infinite' }}></div>
+                    REC
+                </div>
+            )}
+
+            <button className="stop-btn" onClick={() => { stopRecording(); onClose(); }}>
                 <div style={{width: 10, height: 10, background: 'red', borderRadius: '50%'}}></div>
             </button>
         </div>
