@@ -40,6 +40,9 @@ export default function NexusDashboard() {
       .then(res => res.json())
       .then(d => {
         setData(d);
+        // Seed live metrics from real API data
+        if (d.correlation) setLiveCorrelation(parseFloat(d.correlation));
+        if (d.divergence_pct) setLiveDivergence(parseFloat(d.divergence_pct));
         setLoading(false);
       })
       .catch(err => {
