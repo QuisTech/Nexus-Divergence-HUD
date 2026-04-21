@@ -22,14 +22,16 @@ import {
   Maximize2,
   Cpu,
   Layers,
-  Crosshair
+  Crosshair 
 } from 'lucide-react';
+import { DirectorMode } from './Director/DirectorMode';
 
 export default function NexusDashboard() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [systemUptime, setSystemUptime] = useState('00:00:00');
+  const [isDirectorMode, setIsDirectorMode] = useState(false);
 
   useEffect(() => {
     fetch('/api/nexus')
@@ -47,7 +49,18 @@ export default function NexusDashboard() {
       const now = new Date();
       setSystemUptime(now.toLocaleTimeString('en-US', { hour12: false }));
     }, 1000);
-    return () => clearInterval(timer);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.key.toUpperCase() === 'D') {
+        setIsDirectorMode(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   if (loading) return (
@@ -91,7 +104,7 @@ export default function NexusDashboard() {
       <div className="scanline"></div>
       
       {/* HUD Header - Optimized for High Fidelity */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-cyan-900/40 pb-6 mb-10 relative">
+      <div id="hud-header" className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-cyan-900/40 pb-6 mb-10 relative">
         <div className="flex items-center gap-8">
           <div className="relative group">
             <div className="absolute -inset-3 bg-gradient-to-r from-cyan-500 to-fuchsia-600 rounded-full opacity-10 blur-xl group-hover:opacity-30 transition-opacity"></div>
@@ -293,6 +306,12 @@ export default function NexusDashboard() {
       </div>
 
       {/* Grid Background Effect removed from here, moved to globals.css ::before */}
+      
+      <AnimatePresence>
+        {isDirectorMode && (
+          <DirectorMode onClose={() => setIsDirectorMode(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
