@@ -74,11 +74,40 @@ export function DirectorMode({ onClose }: { onClose: () => void }) {
    
     const consoleRef = useRef<PluginConsoleRef>(null);
 
+    const getBestVoice = () => {
+        const voices = window.speechSynthesis.getVoices();
+        if (voices.length === 0) return null;
+
+        // Priority 1: Google Natural / US English (Very high quality)
+        const googleVoice = voices.find(v => v.name.includes('Google') && v.name.includes('US English') && v.name.includes('Female'));
+        if (googleVoice) return googleVoice;
+        
+        const googleVoiceAny = voices.find(v => v.name.includes('Google') && v.name.includes('US English'));
+        if (googleVoiceAny) return googleVoiceAny;
+
+        // Priority 2: Microsoft Natural / Online (Edge only, but great)
+        const msNatural = voices.find(v => v.name.includes('Natural') || v.name.includes('Online'));
+        if (msNatural) return msNatural;
+
+        // Priority 3: Premium Female Voices (Zira on Windows, Samantha on Mac)
+        const femaleVoice = voices.find(v => (v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Samantha') || v.name.includes('Aria')));
+        if (femaleVoice) return femaleVoice;
+
+        return voices[0];
+    };
+
     const speak = (text: string) => {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.95;
+            utterance.rate = 1.0; 
+            utterance.pitch = 1.0;
+            
+            const bestVoice = getBestVoice();
+            if (bestVoice) {
+                utterance.voice = bestVoice;
+            }
+            
             window.speechSynthesis.speak(utterance);
         }
     };

@@ -190,22 +190,25 @@
 .log-line.error .log-msg { color: #f43f5e; }
 .log-line.success .log-msg { color: #06b6d4; }
 
-/* Subtitle Improvement (Bottom Aligned) */
+/* Subtitle Improvement (Centered & Bounded) */
 .demo-subtitle {
     position: absolute;
     bottom: 15%;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    max-width: 800px;
     text-align: center;
     font-size: 1.8rem;
     font-weight: 900;
     color: white;
-    text-shadow: 0 4px 12px rgba(0,0,0,1);
-    padding: 20px 10%;
+    text-shadow: 0 4px 12px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.5);
+    padding: 20px;
     pointer-events: none;
     z-index: 10001;
     letter-spacing: 0.02em;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    line-height: 1.2;
 }
 
 @keyframes clickRipple {
