@@ -32,6 +32,8 @@ export default function NexusDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [systemUptime, setSystemUptime] = useState('00:00:00');
   const [isDirectorMode, setIsDirectorMode] = useState(false);
+  const [liveCorrelation, setLiveCorrelation] = useState(0.8242);
+  const [liveDivergence, setLiveDivergence] = useState(14);
 
   useEffect(() => {
     fetch('/api/nexus')
@@ -57,8 +59,21 @@ export default function NexusDashboard() {
     };
     window.addEventListener('keydown', handleKeyDown);
 
+    // Live micro-fluctuation for metrics (simulates real-time feed)
+    const fluctuationTimer = setInterval(() => {
+      setLiveCorrelation(prev => {
+        const drift = (Math.random() - 0.5) * 0.006;
+        return Math.max(0.78, Math.min(0.88, prev + drift));
+      });
+      setLiveDivergence(prev => {
+        const drift = (Math.random() - 0.5) * 1.2;
+        return Math.max(8, Math.min(22, prev + drift));
+      });
+    }, 2000);
+
     return () => {
       clearInterval(timer);
+      clearInterval(fluctuationTimer);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
@@ -163,11 +178,11 @@ export default function NexusDashboard() {
                  </div>
               </div>
               <div className="text-7xl font-black mb-6 glow-text-cyan transition-all group-hover:tracking-tight origin-left">
-                {data.correlation}
+                {liveCorrelation.toFixed(4)}
               </div>
               <div className="text-[11px] text-slate-500 font-mono flex justify-between items-center pt-5 border-t border-white/5 uppercase tracking-widest">
                 <span>Correlation Index</span>
-                <span className="text-cyan-500 font-bold px-3 py-1 bg-cyan-500/10 border border-cyan-500/20">0.824 FIXED</span>
+                <span className="text-cyan-500 font-bold px-3 py-1 bg-cyan-500/10 border border-cyan-500/20">{liveCorrelation > 0.82 ? "STRONG" : "DRIFT"}</span>
               </div>
            </div>
 
@@ -176,7 +191,7 @@ export default function NexusDashboard() {
                  <div className="text-[12px] uppercase font-bold tracking-[0.3em] digital-font flex items-center gap-3">
                    <AlertTriangle size={16} /> DIVERGENCE_ALERT
                  </div>
-                 <span className="text-[11px] px-3 py-1 bg-fuchsia-500/20 border border-fuchsia-500/40 rounded-sm">LVL_04</span>
+                 <span className="text-[11px] px-3 py-1 bg-fuchsia-500/20 border border-fuchsia-500/40 rounded-sm">{`LVL_${String(Math.round(liveDivergence)).padStart(2, "0")}`}</span>
               </div>
               <h3 className="text-4xl font-black mb-6 tracking-tighter leading-tight group-hover:glow-text-fuchsia transition-all">THE PIVOT PROOF</h3>
               <p className="text-sm text-slate-400 leading-relaxed font-light italic opacity-80 border-l-2 border-fuchsia-500/20 pl-4">
