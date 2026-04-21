@@ -156,7 +156,7 @@ export default function NexusDashboard() {
         
         {/* Left Control Panel / Sidebar Stats */}
         <div className="col-span-12 lg:col-span-3 space-y-10">
-           <div className="hud-card p-10 border-l-4 border-l-cyan-500 group">
+            <div id="intensity-card" className="hud-card p-10 border-l-4 border-l-cyan-500 group">
               <div className="flex justify-between items-center mb-8">
                  <div className="text-[12px] uppercase font-bold text-cyan-400 tracking-[0.3em] digital-font flex items-center gap-3">
                    <LucideRadar size={16} className="animate-spin-slow" /> LIVE_INTENSITY
@@ -171,7 +171,7 @@ export default function NexusDashboard() {
               </div>
            </div>
 
-           <div className="hud-card p-10 border-l-4 border-l-fuchsia-600 bg-fuchsia-950/10 group">
+            <div id="divergence-card" className="hud-card p-10 border-l-4 border-l-fuchsia-600 bg-fuchsia-950/10 group">
               <div className="flex justify-between items-center mb-8 text-fuchsia-400">
                  <div className="text-[12px] uppercase font-bold tracking-[0.3em] digital-font flex items-center gap-3">
                    <AlertTriangle size={16} /> DIVERGENCE_ALERT
@@ -187,7 +187,7 @@ export default function NexusDashboard() {
 
         {/* Center Primary Visualization - Epic Scale */}
         <div className="col-span-12 lg:col-span-6 space-y-10">
-           <div className="hud-card p-12 min-h-[640px] flex flex-col relative group">
+            <div id="yield-chart" className="hud-card p-12 min-h-[640px] flex flex-col relative group">
               <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-cyan-500/30"></div>
               <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-fuchsia-500/30"></div>
               
@@ -257,7 +257,7 @@ export default function NexusDashboard() {
               </div>
            </div>
 
-           <div className="hud-card p-6 h-[240px] flex flex-col justify-between overflow-hidden relative group">
+            <div id="memory-card" className="hud-card p-6 h-[240px] flex flex-col justify-between overflow-hidden relative group">
               <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-fuchsia-500 opacity-20 group-hover:opacity-100 transition-opacity"></div>
               <div className="text-[10px] font-bold text-slate-500 uppercase digital-font tracking-[0.2em]">Memory Core Status</div>
               <div className="flex-1 flex flex-col justify-center gap-4">
@@ -279,7 +279,7 @@ export default function NexusDashboard() {
               </div>
            </div>
 
-           <div className="hud-card p-8 min-h-[300px] relative">
+            <div id="global-map" className="hud-card p-8 min-h-[300px] relative">
               <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-cyan-500/20"></div>
               <div className="text-[10px] font-bold text-slate-500 uppercase mb-8 flex items-center justify-between digital-font tracking-[0.2em]">
                  <span className="flex items-center gap-2"><Globe size={14} className="text-cyan-400" /> Global Correlation Map</span>
