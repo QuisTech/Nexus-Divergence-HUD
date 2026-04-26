@@ -3,208 +3,193 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PluginConsole, PluginConsoleRef } from './PluginConsole';
+import { useRouter } from 'next/navigation';
 
-type ScriptStep =
+// CONFIGURATION: Adjusted for more deliberate, professional pacing
+const LIVE_NARRATION_TIME = 9000;  // 9 seconds per statement
+const TRANSITION_DELAY = 1800;     // 1.8s delay after navigation
+const CURSOR_DURATION = 1.5;       // Slower cursor movement (seconds)
+
+export type ScriptStep =
   | { type: 'cursor'; targetId?: string; x?: number | string; y?: number | string; delay?: number }
   | { type: 'click'; targetId?: string; delay?: number }
   | { type: 'subtitle'; text: string; delay?: number }
   | { type: 'log'; text: string; delay?: number }
   | { type: 'event'; eventType: string; message: string; delay?: number }
   | { type: 'scroll'; targetId?: string; y: number; delay?: number }
+  | { type: 'navigate'; url: string; delay?: number }
   | { type: 'wait'; delay: number };
 
 const SCRIPT: ScriptStep[] = [
-    // --- 0:00 - 0:20: INTRODUCTION ---
+    { type: 'log', text: '[System] Nexus Protocol Initiated', delay: 100 },
     { type: 'cursor', x: '50%', y: '50%', delay: 500 },
-    { type: 'subtitle', text: 'NEXUS ENGINE. AI-Native Analytical Command Center for ZerveHack 2026.' },
-    { type: 'log', text: '[System] Nexus v4.8.2 initialized', delay: 300 },
-    { type: 'log', text: '[System] Memory Core: STABLE', delay: 300 },
-    { type: 'subtitle', text: 'Scenario: Identifying high-alpha market anomalies in real-time.' },
-
-    // --- 0:20 - 0:40: THE PROBLEM ---
-    { type: 'subtitle', text: 'The Problem. The Divergence Dilemma. The lag between crowd sentiment and institutional execution.' },
-    { type: 'cursor', targetId: 'hud-header', delay: 1500 },
-    { type: 'log', text: '[System] Scanning global domain vectors...', delay: 300 },
-
-    // --- 0:40 - 1:20: TECHNICAL WORKFLOW ---
-    { type: 'subtitle', text: 'Step 1. Ingesting Polymarket data versus the S and P 500 Index.' },
-    { type: 'cursor', targetId: 'sys-status', delay: 1500 },
-    { type: 'log', text: '[Ingestion] Inbound ticket: SPY (Alpha Vantage)', delay: 300 },
-    { type: 'log', text: '[Ingestion] Inbound sentiment: Polymarket Gamma API', delay: 300 },
+    { type: 'subtitle', text: 'Welcome to the Nexus Engine. Our mission is to solve the Divergence Dilemma.' },
+    { type: 'subtitle', text: 'In today\'s competitive hackathon landscape, a single page isn\'t enough. We built a full production-ready ecosystem.' },
     
-    { type: 'subtitle', text: 'Step 2. Real-time vector correlation via our Zerve-hosted Python engine.' },
-    { type: 'cursor', targetId: 'sys-sync', delay: 1500 },
-    { type: 'log', text: '[Engine] Running Lead Lag Sweep, 30-day window...', delay: 300 },
-    { type: 'log', text: '[Engine] Multi-axis correlation score calculated: 0.824 FIXED', delay: 300 },
-
-    { type: 'subtitle', text: 'Step 3. Stateful memory tracking using Backboard dot io.' },
-    { type: 'cursor', targetId: 'memory-card', delay: 1500 },
-    { type: 'log', text: '[Memory] Storing vector state in Backboard ledger...', delay: 300 },
-    { type: 'log', text: '[Memory] Pattern recognized: Sentiment leads by 72 hours.', delay: 300 },
-
-    // --- 1:20 - 2:00: THE DASHBOARD ---
-    { type: 'subtitle', text: 'Step 4. Visualizing the Divergence HUD.' },
-    { type: 'cursor', targetId: 'intensity-card', delay: 1500 },
-    { type: 'subtitle', text: 'Live Intensity monitors the absolute strength of the sentiment price bond.' },
+    { type: 'scroll', targetId: 'window', y: 800, delay: 1000 },
+    { type: 'subtitle', text: 'From powerful landing visuals that demonstrate institutional authority and engineering excellence...' },
     
-    { type: 'cursor', targetId: 'yield-chart', delay: 1500 },
-    { type: 'subtitle', text: 'Primary Yield Convergence shows the exact point where sentiment and price decouple.' },
-    { type: 'log', text: '[Visual] Rendering Primary_Yield_Convergence...', delay: 300 },
-
-    // --- 2:00 - 2:40: CASE STUDY ---
-    { type: 'subtitle', text: 'Step 5. The Pivot Proof. A Quantified Case Study.' },
+    { type: 'scroll', targetId: 'window', y: 0, delay: 1000 },
+    { type: 'cursor', targetId: 'nav-login', delay: 1200 },
+    { type: 'subtitle', text: 'To secure, encrypted authentication flows designed for enterprise-grade institutional security.' },
+    
+    { type: 'click', targetId: 'nav-login', delay: 400 },
+    { type: 'navigate', url: '/auth/login', delay: 1000 },
+    { type: 'subtitle', text: 'Our auth gateway utilizes RSA-4096 encryption and multi-node handshakes for total data integrity.' },
+    
+    { type: 'log', text: '[Security] TLS 1.3 Handshake established', delay: 300 },
+    { type: 'cursor', targetId: 'login-btn', delay: 1200 },
+    { type: 'subtitle', text: 'Once provisioned, the user is granted access to the core Analytical Hub.' },
+    
+    { type: 'click', targetId: 'login-btn', delay: 400 },
+    { type: 'navigate', url: '/dashboard', delay: 1000 },
+    { type: 'subtitle', text: 'The Institutional Risk Desk. Here, we correlate real-time data from Zerve-hosted divergence models.' },
+    
+    { type: 'log', text: '[Ingestion] Syncing SPY (Alpha Vantage) & Polymarket Data', delay: 300 },
+    { type: 'cursor', targetId: 'main-chart-card', delay: 1500 },
+    { type: 'subtitle', text: 'Notice the dual-axis convergence chart. We track the S and P 500 index against Polymarket prediction market odds.' },
+    
     { type: 'cursor', targetId: 'divergence-card', delay: 1500 },
-    { type: 'subtitle', text: 'In December 2023, Nexus flagged a 14 percent sentiment surge, 3 days before the Fed Pivot moved yields.' },
-    { type: 'log', text: '[Alpha] Divergence Level 04 Verified (Dec 23 Event)', delay: 300 },
-
-    { type: 'cursor', targetId: 'global-map', delay: 1500 },
-    { type: 'subtitle', text: 'Global Correlation Map ensures our alpha is stable across all underlying macro factors.' },
-
-    // --- 2:40 - 3:00: CONCLUSION ---
-    { type: 'subtitle', text: 'Deployed on Zerve as a production-grade API plus a High-Fidelity HUD.' },
-    { type: 'log', text: '[Status] Service live: nexus-engine-api.hub.zerve.cloud', delay: 300 },
-    { type: 'subtitle', text: 'Nexus Engine. Victory through Visual Authority. Built for ZerveHack 2026.' },
-    { type: 'cursor', x: '95%', y: '5%', delay: 1500 },
+    { type: 'subtitle', text: 'When sentiment leads price action, Nexus flags a Divergence Alert. This is where high-alpha opportunities are born.' },
+    
+    { type: 'cursor', targetId: 'nav-trading', delay: 1200 },
+    { type: 'subtitle', text: 'For immediate execution, we provided an industry-standard, high-fidelity Trading Terminal.' },
+    
+    { type: 'click', targetId: 'nav-trading', delay: 400 },
+    { type: 'navigate', url: '/dashboard/trading', delay: 1000 },
+    { type: 'subtitle', text: 'Equipped with real-time order books, depth charts, and institutional position management panels.' },
+    
+    { type: 'cursor', targetId: 'nav-settings', delay: 1200 },
+    { type: 'subtitle', text: 'Finally, the platform includes full Role-Based Access Control and secure System Audit logging.' },
+    
+    { type: 'click', targetId: 'nav-settings', delay: 400 },
+    { type: 'navigate', url: '/dashboard/settings', delay: 1000 },
+    { type: 'subtitle', text: 'Identity management, neural telemetry sync, and encrypted audit trails for full compliance.' },
+    
+    { type: 'subtitle', text: 'Nexus Engine. Not just a dashboard, but a complete institutional product. Engineered for Victory.' },
+    { type: 'cursor', x: '95%', y: '5%', delay: 2000 },
 ];
 
-export function DirectorMode({ onClose }: { onClose: () => void }) {
+export function DirectorMode({ 
+  onClose, 
+  recorderStream, 
+  onStartRecording 
+}: { 
+  onClose: () => void, 
+  recorderStream: MediaStream | null,
+  onStartRecording: () => Promise<void>
+}) {
     const [subtitle, setSubtitle] = useState('');
+    const [demoMode, setDemoMode] = useState<'CHOOSING' | 'AI' | 'LIVE'>('CHOOSING');
+    const [isUiVisible, setIsUiVisible] = useState(true);
     const [cursorPos, setCursorPos] = useState({ x: 100, y: 100 });
     const [isClicking, setIsClicking] = useState(false);
-    const [isRecording, setIsRecording] = useState(false);
+    const [webcamStream, setWebcamStream] = useState<MediaStream | null>(null);
    
     const consoleRef = useRef<PluginConsoleRef>(null);
-    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-    const chunksRef = useRef<Blob[]>([]);
+    const router = useRouter();
+    const prompterWindow = useRef<Window | null>(null);
+    const scriptActive = useRef(false);
+    const isSpeakingRef = useRef(false);
 
-    const getBestVoice = (): SpeechSynthesisVoice | null => {
-        const voices = window.speechSynthesis.getVoices();
-        if (voices.length === 0) return null;
+    useEffect(() => {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => setWebcamStream(stream))
+            .catch(() => console.warn('Webcam not available'));
+            
+        return () => {
+            webcamStream?.getTracks().forEach(t => t.stop());
+            if (prompterWindow.current) prompterWindow.current.close();
+        };
+    }, []);
 
-        // Priority 1: Google US English Female
-        const googleFemale = voices.find(v => v.name.includes('Google') && v.name.includes('US English') && v.name.includes('Female'));
-        if (googleFemale) return googleFemale;
-        
-        // Priority 2: Any Google US English
-        const googleAny = voices.find(v => v.name.includes('Google') && v.name.includes('US English'));
-        if (googleAny) return googleAny;
-
-        // Priority 3: Microsoft Natural / Online (Edge)
-        const msNatural = voices.find(v => v.name.includes('Natural') || v.name.includes('Online'));
-        if (msNatural) return msNatural;
-
-        // Priority 4: Premium female system voices
-        const femaleVoice = voices.find(v => 
-            v.name.includes('Zira') || v.name.includes('Samantha') || 
-            v.name.includes('Aria') || v.name.includes('Female')
-        );
-        if (femaleVoice) return femaleVoice;
-
-        return voices[0];
+    const openTeleprompter = () => {
+        const w = window.open('', 'NexusTeleprompter', 'width=650,height=350,top=50,left=50');
+        if (w) {
+            w.document.body.style.background = '#020617';
+            w.document.body.style.color = '#06b6d4';
+            w.document.body.style.padding = '35px';
+            w.document.body.style.fontFamily = 'monospace';
+            w.document.body.style.fontSize = '20px';
+            w.document.body.style.lineHeight = '1.6';
+            w.document.title = 'NEXUS_PROMPTER';
+            prompterWindow.current = w;
+            return true;
+        }
+        return false;
     };
 
-    /** Speaks text and WAITS until the voice finishes before resolving */
-    const speakAndWait = (text: string): Promise<void> => {
+    useEffect(() => {
+        if (prompterWindow.current && prompterWindow.current.document) {
+            prompterWindow.current.document.body.innerHTML = `
+                <div style="border-left: 4px solid #d946ef; padding-left: 25px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="color:#475569; font-size:12px; margin-bottom: 15px; font-weight: bold; letter-spacing: 3px;">[LIVE_TELEPROMPTER_SYNC]</div>
+                    <div style="color: white; font-weight: bold; font-family: sans-serif;">${subtitle || 'Waiting for script start...'}</div>
+                    <div style="margin-top: 20px; height: 2px; background: #ffffff05; width: 100%;">
+                         <div id="progress" style="height: 100%; background: #06b6d4; width: 0%; transition: width ${LIVE_NARRATION_TIME}ms linear;"></div>
+                    </div>
+                </div>
+            `;
+            setTimeout(() => {
+                const prog = prompterWindow.current?.document.getElementById('progress');
+                if (prog) prog.style.width = '100%';
+            }, 100);
+        }
+    }, [subtitle]);
+
+    const speak = (text: string): Promise<void> => {
         return new Promise((resolve) => {
-            if (!('speechSynthesis' in window)) {
-                resolve();
-                return;
-            }
+            if (!('speechSynthesis' in window) || isSpeakingRef.current) { resolve(); return; }
             window.speechSynthesis.cancel();
-
+            isSpeakingRef.current = true;
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.92;
-            utterance.pitch = 1.0;
-
-            const bestVoice = getBestVoice();
-            if (bestVoice) {
-                utterance.voice = bestVoice;
-            }
-
-            utterance.onend = () => resolve();
-            utterance.onerror = () => resolve();
-
+            utterance.rate = 0.95;
+            const voices = window.speechSynthesis.getVoices();
+            const voice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') || voices[0];
+            if (voice) utterance.voice = voice;
+            utterance.onend = () => { isSpeakingRef.current = false; resolve(); };
+            utterance.onerror = () => { isSpeakingRef.current = false; resolve(); };
             window.speechSynthesis.speak(utterance);
         });
     };
 
-    /** Start screen recording via browser MediaRecorder */
-    const startRecording = async () => {
-        try {
-            const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: { displaySurface: 'browser' } as any,
-                audio: true,
-            });
-            chunksRef.current = [];
-            const recorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' });
-            recorder.ondataavailable = (e) => {
-                if (e.data.size > 0) chunksRef.current.push(e.data);
-            };
-            recorder.onstop = () => {
-                const blob = new Blob(chunksRef.current, { type: 'video/webm' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `nexus_demo_${Date.now()}.webm`;
-                a.click();
-                URL.revokeObjectURL(url);
-                stream.getTracks().forEach(t => t.stop());
-            };
-            recorder.start();
-            mediaRecorderRef.current = recorder;
-            setIsRecording(true);
-        } catch {
-            // User cancelled the share dialog — continue without recording
-            console.warn('Screen recording was not started (user cancelled or not supported).');
-        }
-    };
+    const runScript = async (mode: 'AI' | 'LIVE') => {
+        if (scriptActive.current) return;
+        scriptActive.current = true;
+        setDemoMode(mode);
+        if (mode === 'LIVE') setIsUiVisible(false);
+        if (!recorderStream) { await onStartRecording(); await new Promise(r => setTimeout(r, 2000)); }
 
-    const stopRecording = () => {
-        if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-            mediaRecorderRef.current.stop();
-            setIsRecording(false);
-        }
-    };
+        for (let i = 0; i < SCRIPT.length; i++) {
+            const step = SCRIPT[i];
+            if (step.type === 'navigate') {
+                setSubtitle("");
+                router.push(step.url);
+                await new Promise(r => {
+                    const check = setInterval(() => {
+                        if (window.location.pathname === step.url) {
+                            clearInterval(check);
+                            setTimeout(r, TRANSITION_DELAY); // Increased wait after navigation
+                        }
+                    }, 100);
+                });
+                continue;
+            }
 
-    const runScript = async () => {
-        // Pre-load voices (Chrome needs a moment)
-        window.speechSynthesis?.getVoices();
-        await new Promise(r => setTimeout(r, 500));
-
-        // Start screen recording
-        await startRecording();
-
-        // Countdown
-        for (let i = 5; i > 0; i--) {
-            setSubtitle(`Initializing Director Mode in ${i}...`);
-            await new Promise(r => setTimeout(r, 1000));
-        }
-        setSubtitle("");
-        await new Promise(r => setTimeout(r, 500));
-
-        for (const step of SCRIPT) {
             if (step.type === 'subtitle') {
                 setSubtitle(step.text);
-                // WAIT for TTS to finish speaking before advancing
-                await speakAndWait(step.text);
-                // Small breathing pause between sentences
-                await new Promise(r => setTimeout(r, 600));
+                if (mode === 'AI') { await speak(step.text); } 
+                else { await new Promise(r => setTimeout(r, LIVE_NARRATION_TIME)); }
+                await new Promise(r => setTimeout(r, 1200));
             }
-            else if (step.type === 'log') {
-                consoleRef.current?.log(step.text, 'info');
-            }
+            else if (step.type === 'log') { consoleRef.current?.log(step.text, 'info'); }
            
-            // Handle cursor movement
             let nextPos = null;
-           
             if ('targetId' in step && step.targetId) {
                 const el = document.getElementById(step.targetId);
                 if (el) {
                     const rect = el.getBoundingClientRect();
-                    nextPos = {
-                        x: rect.left + rect.width / 2,
-                        y: rect.top + rect.height / 2
-                    };
+                    nextPos = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
                 }
             }
             else if (step.type === 'cursor' && step.x !== undefined && step.y !== undefined) {
@@ -213,99 +198,70 @@ export function DirectorMode({ onClose }: { onClose: () => void }) {
                     y: typeof step.y === 'string' ? (parseFloat(step.y) / 100) * window.innerHeight : step.y
                 };
             }
+            if (nextPos) setCursorPos(nextPos);
 
-            if (nextPos) {
-                setCursorPos(nextPos);
-            }
-
-            // Handle click
             if (step.type === 'click') {
                 setIsClicking(true);
-                await new Promise(r => setTimeout(r, 200));
+                await new Promise(r => setTimeout(r, 400));
                 if (step.targetId) {
                     const el = document.getElementById(step.targetId);
                     if (el) el.click();
                 }
-                await new Promise(r => setTimeout(r, 200));
+                await new Promise(r => setTimeout(r, 600));
                 setIsClicking(false);
             }
-           
-            // Handle scroll  
             if (step.type === 'scroll') {
-                if (step.targetId === 'window') {
-                    window.scrollTo({ top: step.y, behavior: 'smooth' });
-                } else if (step.targetId) {
-                    const el = document.getElementById(step.targetId);
-                    if (el) el.scrollTo({ top: step.y, behavior: 'smooth' });
-                }
+                const scrollTarget = step.targetId === 'window' ? window : document.getElementById(step.targetId!);
+                scrollTarget?.scrollTo({ top: step.y, behavior: 'smooth' });
             }
-           
-            // Non-subtitle delays (cursor movement, log pauses, etc.)
             if (step.type !== 'subtitle' && step.delay) {
-                await new Promise(r => setTimeout(r, step.delay));
+                await new Promise(r => setTimeout(r, 1000));
             }
         }
-       
-        setSubtitle("Analysis Demo Complete.");
+        setSubtitle("Institutional Demo Complete.");
         await new Promise(r => setTimeout(r, 3000));
-
-        // Auto-stop recording and trigger download
-        stopRecording();
-        setTimeout(onClose, 1000);
+        onClose();
     };
 
-    useEffect(() => {
-        runScript();
-        return () => {
-            window.speechSynthesis?.cancel();
-            stopRecording();
-        };
-    }, []);
+    if (demoMode === 'CHOOSING') {
+        return (
+            <div className="fixed inset-0 z-[20000] bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-8 pointer-events-auto">
+                <div className="max-w-2xl w-full">
+                    <h2 className="text-4xl font-black text-white digital-font mb-2 italic">Select Demo Strategy</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                        <button onClick={() => { runScript('AI'); }} className="hud-card p-8 text-left group hover:border-cyan-500">
+                            <h3 className="text-2xl font-black text-white mb-2 uppercase">AI Autopilot</h3>
+                            <p className="text-[11px] text-slate-500 uppercase font-bold">Subtitles + AI Voice Narration</p>
+                        </button>
+                        <button onClick={() => { if(openTeleprompter()) runScript('LIVE'); }} className="hud-card p-8 text-left group hover:border-fuchsia-500">
+                            <h3 className="text-2xl font-black text-white mb-2 uppercase">Live Presenter</h3>
+                            <p className="text-[11px] text-slate-500 uppercase font-bold">Teleprompter only (Voice disabled)</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="director-overlay">
-            <motion.div
-                className="virtual-mouse"
-                animate={{ x: cursorPos.x, y: cursorPos.y }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
-            >
+        <div className="director-overlay" onMouseEnter={() => setIsUiVisible(true)} onMouseLeave={() => demoMode === 'LIVE' && setIsUiVisible(false)}>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ willChange: 'transform' }} className="fixed bottom-8 right-8 w-40 h-40 rounded-full border-4 border-cyan-500 overflow-hidden z-[10005] shadow-[0_0_50px_rgba(6,182,212,0.4)] bg-slate-900">
+                {webcamStream && <video autoPlay muted ref={v => { if(v) v.srcObject = webcamStream; }} style={{ transform: 'scaleX(-1) translateZ(0)' }} className="w-full h-full object-cover" />}
+            </motion.div>
+
+            <motion.div className="virtual-mouse" animate={{ x: cursorPos.x, y: cursorPos.y }} transition={{ duration: CURSOR_DURATION, ease: "easeInOut" }}>
                 <div className={`cursor-pointer ${isClicking ? 'cursor-clicking' : ''}`}></div>
             </motion.div>
 
-            <AnimatePresence>
-                {subtitle && (
-                    <motion.div
-                        key={subtitle}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="demo-subtitle"
-                    >
+            <AnimatePresence mode="wait">
+                {subtitle && demoMode === 'AI' && (
+                    <motion.div key={subtitle} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="demo-subtitle">
                         {subtitle}
                     </motion.div>
                 )}
             </AnimatePresence>
 
             <PluginConsole ref={consoleRef} />
-
-            {/* Recording indicator */}
-            {isRecording && (
-                <div style={{
-                    position: 'absolute', top: 30, left: 30,
-                    display: 'flex', alignItems: 'center', gap: 8,
-                    background: 'rgba(0,0,0,0.6)', padding: '8px 16px',
-                    borderRadius: 4, border: '1px solid rgba(255,0,0,0.4)',
-                    fontSize: 12, color: '#f87171', fontFamily: 'monospace',
-                    pointerEvents: 'none', zIndex: 10002,
-                }}>
-                    <div style={{ width: 8, height: 8, background: '#ef4444', borderRadius: '50%', animation: 'pulse 1s infinite' }}></div>
-                    REC
-                </div>
-            )}
-
-            <button className="stop-btn" onClick={() => { stopRecording(); onClose(); }}>
-                <div style={{width: 10, height: 10, background: 'red', borderRadius: '50%'}}></div>
-            </button>
         </div>
     );
 }

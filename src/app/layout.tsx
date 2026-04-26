@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import DemoProvider from "@/components/Director/DemoProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "The Nexus Engine | AI-Native Data Sentiment",
-  description: "Cross-domain analytical platform correlating prediction markets with financial data.",
+  title: "Nexus Divergence HUD | Institutional Intelligence",
+  description: "Advanced institutional-grade analytical platform correlating global sentiment with financial divergence.",
 };
 
 export default function RootLayout({
@@ -25,11 +26,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        {children}
+      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+        <DemoProvider>
+          {children}
+        </DemoProvider>
       </body>
     </html>
   );
