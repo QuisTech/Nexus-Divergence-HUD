@@ -94,15 +94,11 @@ export function DirectorMode({
     const isSpeakingRef = useRef(false);
 
     useEffect(() => {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => setWebcamStream(stream))
-            .catch(() => console.warn('Webcam not available'));
-            
         return () => {
             webcamStream?.getTracks().forEach(t => t.stop());
             if (prompterWindow.current) prompterWindow.current.close();
         };
-    }, []);
+    }, [webcamStream]);
 
     const openTeleprompter = () => {
         const w = window.open('', 'NexusTeleprompter', 'width=650,height=350,top=50,left=50');
@@ -158,7 +154,12 @@ export function DirectorMode({
         if (scriptActive.current) return;
         scriptActive.current = true;
         setDemoMode(mode);
-        if (mode === 'LIVE') setIsUiVisible(false);
+        if (mode === 'LIVE') {
+            setIsUiVisible(false);
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => setWebcamStream(stream))
+                .catch(() => console.warn('Webcam not available'));
+        }
         if (!recorderStream) { await onStartRecording(); await new Promise(r => setTimeout(r, 2000)); }
 
         for (let i = 0; i < SCRIPT.length; i++) {
@@ -283,9 +284,11 @@ export function DirectorMode({
 
     return (
         <div className="director-overlay" onMouseEnter={() => setIsUiVisible(true)} onMouseLeave={() => demoMode === 'LIVE' && setIsUiVisible(false)}>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ willChange: 'transform' }} className="fixed bottom-8 right-8 w-40 h-40 rounded-full border-4 border-cyan-500 overflow-hidden z-[10005] shadow-[0_0_50px_rgba(6,182,212,0.4)] bg-slate-900">
-                {webcamStream && <video autoPlay muted ref={v => { if(v) v.srcObject = webcamStream; }} style={{ transform: 'scaleX(-1) translateZ(0)' }} className="w-full h-full object-cover" />}
-            </motion.div>
+            {demoMode === 'LIVE' && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ willChange: 'transform' }} className="fixed bottom-8 right-8 w-40 h-40 rounded-full border-4 border-cyan-500 overflow-hidden z-[10005] shadow-[0_0_50px_rgba(6,182,212,0.4)] bg-slate-900">
+                    {webcamStream && <video autoPlay muted ref={v => { if(v) v.srcObject = webcamStream; }} style={{ transform: 'scaleX(-1) translateZ(0)' }} className="w-full h-full object-cover" />}
+                </motion.div>
+            )}
 
             <motion.div className="virtual-mouse" animate={{ x: cursorPos.x, y: cursorPos.y }} transition={{ duration: CURSOR_DURATION, ease: "easeInOut" }}>
                 <div className={`cursor-pointer ${isClicking ? 'cursor-clicking' : ''}`}></div>
