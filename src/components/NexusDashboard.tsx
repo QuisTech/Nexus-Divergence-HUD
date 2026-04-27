@@ -126,9 +126,7 @@ export default function NexusDashboard() {
            </div>
         </div>
         <div className="flex items-center gap-2">
-           <button id="demo-btn" onClick={() => window.dispatchEvent(new CustomEvent('nexus-demo-start'))} className="px-4 py-2 bg-slate-900 border border-white/5 text-[10px] font-black uppercase tracking-widest hover:border-cyan-500/50 transition-all text-slate-400 hover:text-white">
-              Start Demo Sequence
-           </button>
+           {/* Demo button removed - now triggered via Shift+D only */}
         </div>
       </div>
 

@@ -16,13 +16,27 @@ export default function DemoProvider({ children }: { children: React.ReactNode }
       setIsActive(active);
     };
     checkActive();
-    window.addEventListener('storage', checkActive);
-    window.addEventListener('nexus-demo-start', () => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Secret combo: Shift + D
+      if (e.shiftKey && e.key.toUpperCase() === 'D') {
+        window.dispatchEvent(new CustomEvent('nexus-demo-start'));
+      }
+    };
+
+    const handleDemoStart = () => {
       localStorage.setItem('nexus_demo_active', 'true');
       localStorage.setItem('nexus_demo_step', '0');
       setIsActive(true);
-    });
-    return () => window.removeEventListener('storage', checkActive);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('nexus-demo-start', handleDemoStart);
+    
+    return () => {
+      window.removeEventListener('storage', checkActive);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('nexus-demo-start', handleDemoStart);
+    };
   }, []);
 
   const startRecording = async () => {
