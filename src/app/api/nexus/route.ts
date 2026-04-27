@@ -95,7 +95,18 @@ export async function GET() {
 
     // Build finance chart data from real SPY prices
     const financeData = spyData
-      ? spyData.map(d => ({ date: d.date, value: d.close }))
+      ? spyData.map((d, i) => {
+          // Sync sentiment from polyData if available, otherwise fallback to noise around price
+          const sentimentBase = polyData && polyData.length > 0 
+            ? polyData[i % polyData.length].sentiment * 500 + 250 // Scale sentiment to price range
+            : d.close + (Math.random() - 0.5) * 20;
+
+          return { 
+            date: d.date, 
+            finance_val: d.close,
+            sentiment_val: sentimentBase
+          };
+        })
       : generateFallbackFinanceData();
 
     // Compute real correlation if we have both data streams
@@ -194,9 +205,11 @@ function generateFallbackFinanceData() {
   return Array.from({ length: 30 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - (29 - i));
+    const baseFinance = 520 + i * 0.8 + Math.sin(i * 0.3) * 5;
     return {
       date: d.toISOString().split('T')[0],
-      value: 520 + i * 0.8 + Math.sin(i * 0.3) * 5,
+      finance_val: baseFinance,
+      sentiment_val: baseFinance + (Math.random() - 0.5) * 15 + (i > 25 ? 10 : 0)
     };
   });
 }
