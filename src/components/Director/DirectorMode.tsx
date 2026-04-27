@@ -11,65 +11,8 @@ const LIVE_NARRATION_TIME = 9000;  // 9 seconds per statement
 const TRANSITION_DELAY = 1800;     // 1.8s delay after navigation
 const CURSOR_DURATION = 1.5;       // Slower cursor movement (seconds)
 
-export type ScriptStep =
-  | { type: 'cursor'; targetId?: string; x?: number | string; y?: number | string; delay?: number }
-  | { type: 'click'; targetId?: string; delay?: number }
-  | { type: 'subtitle'; text: string; delay?: number }
-  | { type: 'log'; text: string; delay?: number }
-  | { type: 'event'; eventType: string; message: string; delay?: number }
-  | { type: 'scroll'; targetId?: string; y: number; delay?: number }
-  | { type: 'navigate'; url: string; delay?: number }
-  | { type: 'wait'; delay: number };
-
-const SCRIPT: ScriptStep[] = [
-    { type: 'log', text: '[System] Nexus Protocol Initiated', delay: 100 },
-    { type: 'cursor', x: '50%', y: '50%', delay: 500 },
-    { type: 'subtitle', text: 'Welcome to the Nexus Engine. Our mission is to solve the Divergence Dilemma.' },
-    { type: 'subtitle', text: 'In today\'s competitive hackathon landscape, a single page isn\'t enough. We built a full production-ready ecosystem.' },
-    
-    { type: 'scroll', targetId: 'window', y: 800, delay: 1000 },
-    { type: 'subtitle', text: 'From powerful landing visuals that demonstrate institutional authority and engineering excellence...' },
-    
-    { type: 'scroll', targetId: 'window', y: 0, delay: 1000 },
-    { type: 'cursor', targetId: 'nav-login', delay: 1200 },
-    { type: 'subtitle', text: 'To secure, encrypted authentication flows designed for enterprise-grade institutional security.' },
-    
-    { type: 'click', targetId: 'nav-login', delay: 400 },
-    { type: 'navigate', url: '/auth/login', delay: 1000 },
-    { type: 'subtitle', text: 'Our auth gateway utilizes RSA-4096 encryption and multi-node handshakes for total data integrity.' },
-    
-    { type: 'log', text: '[Security] TLS 1.3 Handshake established', delay: 300 },
-    { type: 'cursor', targetId: 'login-btn', delay: 1200 },
-    { type: 'subtitle', text: 'Once provisioned, the user is granted access to the core Analytical Hub.' },
-    
-    { type: 'click', targetId: 'login-btn', delay: 400 },
-    { type: 'navigate', url: '/dashboard', delay: 1000 },
-    { type: 'subtitle', text: 'The Institutional Risk Desk. Here, we correlate real-time data from Zerve-hosted divergence models.' },
-    
-    { type: 'log', text: '[Ingestion] Syncing SPY (Alpha Vantage) & Polymarket Data', delay: 300 },
-    { type: 'cursor', targetId: 'main-chart-card', delay: 1500 },
-    { type: 'subtitle', text: 'Notice the dual-axis convergence chart. We track the S and P 500 index against Polymarket prediction market odds.' },
-    
-    { type: 'cursor', targetId: 'divergence-card', delay: 1500 },
-    { type: 'subtitle', text: 'When sentiment leads price action, Nexus flags a Divergence Alert. This is where high-alpha opportunities are born.' },
-    
-    { type: 'cursor', targetId: 'nav-trading', delay: 1200 },
-    { type: 'subtitle', text: 'For immediate execution, we provided an industry-standard, high-fidelity Trading Terminal.' },
-    
-    { type: 'click', targetId: 'nav-trading', delay: 400 },
-    { type: 'navigate', url: '/dashboard/trading', delay: 1000 },
-    { type: 'subtitle', text: 'Equipped with real-time order books, depth charts, and institutional position management panels.' },
-    
-    { type: 'cursor', targetId: 'nav-settings', delay: 1200 },
-    { type: 'subtitle', text: 'Finally, the platform includes full Role-Based Access Control and secure System Audit logging.' },
-    
-    { type: 'click', targetId: 'nav-settings', delay: 400 },
-    { type: 'navigate', url: '/dashboard/settings', delay: 1000 },
-    { type: 'subtitle', text: 'Identity management, neural telemetry sync, and encrypted audit trails for full compliance.' },
-    
-    { type: 'subtitle', text: 'Nexus Engine. Not just a dashboard, but a complete institutional product. Engineered for Victory.' },
-    { type: 'cursor', x: '95%', y: '5%', delay: 2000 },
-];
+import { SCRIPT, ScriptStep } from './script';
+import { DemoSelector } from './DemoSelector';
 
 export function DirectorMode({ 
   onClose, 
@@ -226,60 +169,7 @@ export function DirectorMode({
     };
 
     if (demoMode === 'CHOOSING') {
-        return (
-            <div className="fixed inset-0 z-[20000] bg-slate-950/98 backdrop-blur-3xl flex items-center justify-center p-8 pointer-events-auto">
-                <div className="max-w-3xl w-full text-center">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="mb-16"
-                    >
-                        <h2 className="text-5xl font-black text-white digital-font mb-4 italic tracking-tighter uppercase glow-text-cyan">Select Demo Strategy</h2>
-                        <p className="text-slate-500 font-mono text-xs tracking-[0.3em] uppercase">Choose your engagement protocol for this session</p>
-                    </motion.div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <button 
-                            onClick={() => { runScript('AI'); }} 
-                            className="hud-card p-10 text-left group hover:border-cyan-500/50 transition-all bg-slate-900/40 relative overflow-hidden"
-                        >
-                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-all">
-                                <LucideRadar size={64} className="text-cyan-500" />
-                            </div>
-                            <h3 className="text-3xl font-black text-white mb-3 uppercase tracking-tighter group-hover:text-cyan-400 transition-all">AI Autopilot</h3>
-                            <p className="text-[12px] text-slate-400 uppercase font-bold tracking-widest leading-relaxed">
-                                Subtitles + AI Voice Narration
-                            </p>
-                            <div className="mt-8 flex items-center gap-2 text-[10px] font-black text-cyan-500 opacity-0 group-hover:opacity-100 transition-all">
-                                <span>INITIATE_AUTO_PROTOCOL</span>
-                                <div className="h-px flex-1 bg-cyan-500/30"></div>
-                            </div>
-                        </button>
-
-                        <button 
-                            onClick={() => { if(openTeleprompter()) runScript('LIVE'); }} 
-                            className="hud-card p-10 text-left group hover:border-fuchsia-500/50 transition-all bg-slate-900/40 relative overflow-hidden"
-                        >
-                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-all">
-                                <LucideRadar size={64} className="text-fuchsia-500" />
-                            </div>
-                            <h3 className="text-3xl font-black text-white mb-3 uppercase tracking-tighter group-hover:text-fuchsia-400 transition-all">Live Presenter</h3>
-                            <p className="text-[12px] text-slate-400 uppercase font-bold tracking-widest leading-relaxed">
-                                Teleprompter only (Voice disabled)
-                            </p>
-                            <div className="mt-8 flex items-center gap-2 text-[10px] font-black text-fuchsia-500 opacity-0 group-hover:opacity-100 transition-all">
-                                <span>ACTIVATE_PROMPTER_SYNC</span>
-                                <div className="h-px flex-1 bg-fuchsia-500/30"></div>
-                            </div>
-                        </button>
-                    </div>
-
-                    <div className="mt-16 text-[10px] text-slate-600 font-mono tracking-widest uppercase">
-                        Secure Environment // Institutional Clearance Level 4
-                    </div>
-                </div>
-            </div>
-        );
+        return <DemoSelector onSelect={runScript} openTeleprompter={openTeleprompter} />;
     }
 
     return (

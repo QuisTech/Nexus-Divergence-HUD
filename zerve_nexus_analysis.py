@@ -26,7 +26,7 @@ warnings.filterwarnings('ignore')
 # ============================================================
 #  CONFIGURATION
 # ============================================================
-ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY", "PN7GDBILRTW0W5GI")
+ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 ALPHA_VANTAGE_API_URL = "https://www.alphavantage.co/query"
 MASTER_SYMBOL = "SPY"
 
